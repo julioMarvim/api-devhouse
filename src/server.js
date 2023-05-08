@@ -1,3 +1,4 @@
 import app from './app.js';
+const PORT = process.env.PORT;
 
-app.listen(3333);
+app.listen(PORT);
