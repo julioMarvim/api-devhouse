@@ -1,7 +1,6 @@
 import Reserve from "../models/Reserve.js";
 import User from "../models/User.js";
 import House from "../models/House.js";
-import { trusted } from "mongoose";
 
 class ReserveController{
   async store(req, res){
@@ -33,6 +32,21 @@ class ReserveController{
     await reserve.populate('user');
 
     return res.json(reserve);
+  }
+
+  async index(req, res){
+    const {user_id} = req.headers;
+    const reserves = await Reserve.find({user: user_id}).populate('house');
+
+    return res.json(reserves);
+  }
+
+  async destroy(req, res){
+    const {reserve_id} = req.body;
+
+    await Reserve.findByIdAndDelete({_id: reserve_id});
+
+    return res.send();
   }
 }
 
