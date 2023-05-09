@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import path from "path";
 import routes from './routes.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -17,6 +18,10 @@ class App{
   }
 
   middlewares(){
+    this.server.use(
+      '/files',
+      express.static(path.resolve(process.cwd(), 'uploads'))
+    )
     this.server.use(express.json());
   }
 
