@@ -8,34 +8,31 @@
  destroy; quando queremos deletar uma sessão.
  */
 
-import User from "../models/User.js";
-import * as Yup from 'yup'
+import * as Yup from 'yup';
+import User from '../models/User.js';
 
 class SessionController {
-
   async store(req, res) {
-    
-    const schema  = Yup.object().shape({
-      email: Yup.string().email().required()
+    const schema = Yup.object().shape({
+      email: Yup.string().email().required(),
     });
 
-    const {email} = req.body;
+    const { email } = req.body;
 
-    if(! (await schema.isValid(req.body))){
-      return res.status(400).json({error: 'Email inválido.'});
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Email inválido.' });
     }
 
-    //verifica se o usuario ja existe.
-    let user =  await User.findOne({email});
+    // verifica se o usuario ja existe.
+    let user = await User.findOne({ email });
 
-    //se o usuario não existir ele cria um novo.
-    if(!user){
-      user = await User.create({email});
+    // se o usuario não existir ele cria um novo.
+    if (!user) {
+      user = await User.create({ email });
     }
 
     return res.json(user);
   }
-
 }
 
 export default new SessionController();
